@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>LevelUp Kids</title>
+  <link rel="stylesheet" href="estilo.css" />
+  <link rel="stylesheet" href="menu-lateral.css" />
+</head>
+<body>
+  <script>
+    // Bloqueia acesso se não estiver logado
+    if (sessionStorage.getItem("logado") !== "true") {
+      alert("Por favor, faça login primeiro!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- ======== BOTÃO MENU ======== -->
+  <div id="btn-menu">&#9776;</div>
+
+  <!-- ======== MENU LATERAL ======== -->
+  <aside id="menu-lateral">
+    <div class="perfil">
+      <label for="input-foto">
+        <img id="foto-usuario"
+          src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+          alt="Avatar">
+      </label>
+      <input type="file" id="input-foto" accept="image/*" style="display:none">
+      <h3>Olá, <span id="nome-usuario">Jogador</span>!</h3>
+    </div>
+    <nav>
+      <a href="index.html" class="active">🏠 Início</a>
+      <a href="progresso.html">📊 Progresso</a>
+      <a href="#" id="btn-personalizar">🎨 Personalização</a>
+      <a href="#" id="logout">🚪 Sair</a>
+    </nav>
+  </aside>
+
+  <!-- ======== SOBREPOSIÇÃO ESCURA ======== -->
+  <div id="overlay"></div>
+
+  <header>
+    <h1>LevelUp Kids</h1>
+  </header>
+
+  
+    <main>
+  <!-- ======== VÍDEO PROMOCIONAL ======== -->
+  <section id="video-promocional">
+    <video controls muted>
+      <source src="videospromocional.mp4" type="video/mp4">
+      Seu navegador não suporta vídeos em HTML5.
+    </video>
+  </section>
+
+    <h2>Escolha sua matéria</h2>
+
+    <section class="categorias">
+      <a href="Português.html" class="categoria">
+        <img src="capport.png" alt="Português">
+        <h3>Português</h3>
+      </a>
+
+      <a href="matematica.html" class="categoria">
+        <img src="capmat.png" alt="Matemática">
+        <h3>Matemática</h3>
+      </a>
+
+      <a href="historia.html" class="categoria">
+        <img src="yupp-generated-image-584637 (1).png" alt="História">
+        <h3>História</h3>
+      </a>
+
+      <a href="geografia.html" class="categoria">
+        <img src="geograf.png" alt="Geografia">
+        <h3>Geografia</h3>
+      </a>
+    </section>
+
+    <h2>Quem somos</h2>
+    <p>
+      A LevelUp Kids cria jogos educativos divertidos para ajudar crianças a aprender brincando.
+      Usando o poder da gamificação, transformamos matérias como matemática e português em aventuras
+      cheias de desafios, recompensas e diversão!
+      <br>
+      <span id="more-text" style="display:none;">
+        Nossos jogos estimulam a curiosidade, raciocínio e concentração das crianças,
+        tornando o aprendizado uma experiência leve e empolgante. 🌟
+      </span>
+    </p>
+    <button id="toggle-more">Leia mais</button>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva 1°DS</p>
+  </footer>
+
+  <!-- Mascote Capivara -->
+  <img
+    src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+    alt="Mascote Capivara"
+    id="mascote-capivara"
+    title="Clique em mim para ativar a música"
+  />
+
+  <!-- Música de fundo -->
+  <audio id="bg-music" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio em HTML5.
+  </audio>
+
+  <script>
+    // ======== LOGOUT ========
+    document.getElementById('logout').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // ======== MENU LATERAL ========
+    const btnMenu = document.getElementById("btn-menu");
+    const menu = document.getElementById("menu-lateral");
+    const overlay = document.getElementById("overlay");
+
+    btnMenu.addEventListener("click", () => {
+      menu.classList.toggle("ativo");
+      overlay.classList.toggle("ativo");
+    });
+
+    overlay.addEventListener("click", () => {
+      menu.classList.remove("ativo");
+      overlay.classList.remove("ativo");
+    });
+
+    // ======== PERSONALIZAÇÃO ========
+    const inputFoto = document.getElementById("input-foto");
+    const fotoUsuario = document.getElementById("foto-usuario");
+    const nomeUsuario = document.getElementById("nome-usuario");
+
+    document.getElementById('btn-personalizar').addEventListener('click', () => {
+      const nome = prompt("Digite seu nome de jogador:");
+      if (nome) {
+        sessionStorage.setItem("usuario", nome);
+        nomeUsuario.textContent = nome;
+      }
+    });
+
+    inputFoto.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          fotoUsuario.src = e.target.result;
+          sessionStorage.setItem("foto", e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // ======== CARREGAR DADOS SALVOS ========
+    const nomeSalvo = sessionStorage.getItem("usuario");
+    const fotoSalva = sessionStorage.getItem("foto");
+    if (nomeSalvo) nomeUsuario.textContent = nomeSalvo;
+    if (fotoSalva) fotoUsuario.src = fotoSalva;
+
+    // ======== LEIA MAIS ========
+    const toggleBtn = document.getElementById('toggle-more');
+    const moreText = document.getElementById('more-text');
+    toggleBtn.addEventListener('click', () => {
+      if (moreText.style.display === 'none') {
+        moreText.style.display = 'inline';
+        toggleBtn.textContent = 'Leia menos';
+      } else {
+        moreText.style.display = 'none';
+        toggleBtn.textContent = 'Leia mais';
+      }
+    });
+
+    // ======== MÚSICA ========
+    const mascoteCapivara = document.getElementById('mascote-capivara');
+    const bgMusic = document.getElementById('bg-music');
+    let musicaAtivada = false;
+
+    mascoteCapivara.addEventListener('click', () => {
+      if (!musicaAtivada) {
+        bgMusic.play().then(() => {
+          musicaAtivada = true;
+          mascoteCapivara.title = "Música ativada 🎵";
+        }).catch(() => {
+          alert("Não foi possível iniciar a música. Seu navegador pode estar bloqueando o som automático.");
+        });
+      } else {
+        bgMusic.pause();
+        musicaAtivada = false;
+        mascoteCapivara.title = "Música pausada 🔇";
+      }
+    });
+  </script>
+</body>
+</html>

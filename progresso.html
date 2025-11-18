@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Progresso</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <script>
+    // Bloqueia acesso se não estiver logado
+    if (sessionStorage.getItem("logado") !== "true") {
+      alert("Por favor, faça login primeiro!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- ======== BOTÃO MENU ======== -->
+  <div id="btn-menu">&#9776;</div>
+
+  <!-- ======== MENU LATERAL ======== -->
+  <aside id="menu-lateral">
+    <div class="perfil">
+      <label for="input-foto">
+        <img id="foto-usuario" src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg" alt="Avatar">
+      </label>
+      <input type="file" id="input-foto" accept="image/*" style="display:none">
+      <h3><span id="nome-usuario">Jogador</span></h3>
+    </div>
+    <nav>
+      <a href="index.html">🏠 Início</a>
+      <a href="progresso.html" class="active">📊 Progresso</a>
+      <a href="#" id="btn-personalizar">🎨 Personalização</a>
+      <a href="#" id="logout">🚪 Sair</a>
+    </nav>
+  </aside>
+
+  <!-- ======== SOBREPOSIÇÃO ESCURA ======== -->
+  <div id="overlay"></div>
+
+  <header>
+    <h1>Meu Progresso</h1>
+    <nav>
+      <a href="#tarefas">Tarefas</a>
+      <a href="#conquistas">Conquistas</a>
+      <a href="#personalizacao">Personalização</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ======== PROGRESSO GERAL ======== -->
+    <section id="progresso-geral">
+      <h2>📈 Progresso Geral</h2>
+      <p style="text-align:center;">Seu aprendizado está em andamento! Continue completando tarefas.</p>
+      <div style="width:80%;margin:20px auto;">
+        <div style="background-color:#ffeaf0;border-radius:20px;overflow:hidden;">
+          <div id="barra-progresso" style="height:25px;width:0%;background-color:#ff6f91;border-radius:20px;text-align:center;color:white;font-weight:bold;transition:width 0.5s;">0%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== TAREFAS ======== -->
+    <section id="tarefas">
+      <h2>📝 Tarefas Concluídas</h2>
+      <ul id="lista-tarefas" style="list-style:none;padding:0;max-width:600px;margin:auto;">
+        <li><label><input type="checkbox" class="tarefa"> Concluir 1 quiz de Português</label></li>
+        <li><label><input type="checkbox" class="tarefa"> Resolver 3 exercícios de Matemática</label></li>
+        <li><label><input type="checkbox" class="tarefa"> Explorar o módulo de História</label></li>
+        <li><label><input type="checkbox" class="tarefa"> Completar 2 fases de Geografia</label></li>
+      </ul>
+      <button id="resetar-progresso">🔄 Resetar progresso</button>
+    </section>
+
+    <!-- ======== CONQUISTAS ======== -->
+    <section id="conquistas">
+      <h2>🏆 Suas Conquistas</h2>
+      <div id="lista-conquistas" class="categorias">
+        <div class="categoria" id="medalha-iniciante">
+          <img src="https://cdn-icons-png.flaticon.com/512/2583/2583346.png" alt="Iniciante">
+          <h3>Iniciante</h3>
+        </div>
+        <div class="categoria" id="medalha-explorador">
+          <img src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png" alt="Explorador">
+          <h3>Explorador</h3>
+        </div>
+        <div class="categoria" id="medalha-mestre">
+          <img src="https://cdn-icons-png.flaticon.com/512/2583/2583311.png" alt="Mestre">
+          <h3>Mestre</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== PERSONALIZAÇÃO ======== -->
+    <section id="personalizacao">
+      <h2>🎨 Personalização</h2>
+      <p style="text-align:center;">Aqui você pode trocar seu nome e foto de perfil para deixar tudo do seu jeito!</p>
+      <button id="btn-alterar-nome">Alterar nome</button>
+      <button id="btn-alterar-foto">Alterar foto</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva 1°DS</p>
+  </footer>
+
+  <!-- Mascote Capivara -->
+  <img id="mascote-capivara"
+       src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+       alt="Mascote Capivara"
+       title="Clique em mim para comemorar!"
+  />
+
+  <audio id="efeito-som" src="musica.mp3"></audio>
+
+  <script>
+    // ======== LOGOUT ========
+    document.getElementById('logout').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // ======== MENU LATERAL ========
+    const btnMenu = document.getElementById("btn-menu");
+    const menu = document.getElementById("menu-lateral");
+    const overlay = document.getElementById("overlay");
+
+    btnMenu.addEventListener("click", () => {
+      menu.classList.toggle("ativo");
+      overlay.classList.toggle("ativo");
+    });
+
+    overlay.addEventListener("click", () => {
+      menu.classList.remove("ativo");
+      overlay.classList.remove("ativo");
+    });
+
+    // ======== PERSONALIZAÇÃO ========
+    const nomeSpan = document.getElementById("nome-usuario");
+    const fotoUsuario = document.getElementById("foto-usuario");
+    const inputFoto = document.getElementById("input-foto");
+
+    // Carregar dados salvos
+    nomeSpan.textContent = sessionStorage.getItem("usuario") || "Jogador";
+    const fotoSalva = sessionStorage.getItem("foto");
+    if (fotoSalva) fotoUsuario.src = fotoSalva;
+
+    document.getElementById('btn-personalizar').addEventListener('click', () => {
+      alert("Use os botões na seção de Personalização para alterar seu perfil!");
+    });
+
+    document.getElementById('btn-alterar-nome').addEventListener('click', () => {
+      const novoNome = prompt("Digite seu novo nome de jogador:");
+      if (novoNome) {
+        sessionStorage.setItem("usuario", novoNome);
+        nomeSpan.textContent = novoNome;
+        alert("Nome alterado!");
+      }
+    });
+
+    document.getElementById('btn-alterar-foto').addEventListener('click', () => {
+      inputFoto.click();
+    });
+
+    inputFoto.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          fotoUsuario.src = ev.target.result;
+          sessionStorage.setItem("foto", ev.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // ======== TAREFAS E PROGRESSO ========
+    const tarefas = document.querySelectorAll('.tarefa');
+    const barraProgresso = document.getElementById('barra-progresso');
+
+    // Carregar estado salvo
+    const progressoSalvo = JSON.parse(localStorage.getItem('progresso')) || {};
+    tarefas.forEach((t, i) => {
+      if (progressoSalvo[i]) t.checked = true;
+    });
+    atualizarProgresso();
+
+    tarefas.forEach((t, i) => {
+      t.addEventListener('change', () => {
+        progressoSalvo[i] = t.checked;
+        localStorage.setItem('progresso', JSON.stringify(progressoSalvo));
+        atualizarProgresso();
+      });
+    });
+
+    function atualizarProgresso() {
+      const total = tarefas.length;
+      const feitas = Array.from(tarefas).filter(t => t.checked).length;
+      const pct = Math.round((feitas / total) * 100);
+      barraProgresso.style.width = pct + "%";
+      barraProgresso.textContent = pct + "%";
+      desbloquearConquistas(pct);
+    }
+
+    // ======== RESETAR ========
+    document.getElementById('resetar-progresso').addEventListener('click', () => {
+      if (confirm("Deseja realmente resetar o progresso?")) {
+        localStorage.removeItem('progresso');
+        tarefas.forEach(t => t.checked = false);
+        atualizarProgresso();
+      }
+    });
+
+    // ======== CONQUISTAS ========
+    function desbloquearConquistas(pct) {
+      const conquistas = {
+        iniciante: document.getElementById("medalha-iniciante"),
+        explorador: document.getElementById("medalha-explorador"),
+        mestre: document.getElementById("medalha-mestre")
+      };
+      conquistas.iniciante.style.opacity = pct >= 25 ? "1" : "0.3";
+      conquistas.explorador.style.opacity = pct >= 60 ? "1" : "0.3";
+      conquistas.mestre.style.opacity = pct >= 100 ? "1" : "0.3";
+    }
+
+    // ======== MASCOTE COM SOM ========
+    const mascote = document.getElementById('mascote-capivara');
+    const som = document.getElementById('efeito-som');
+    mascote.addEventListener('click', () => {
+      som.play();
+      alert("Parabéns! Continue se esforçando! 🏆");
+    });
+  </script>
+</body>
+</html>

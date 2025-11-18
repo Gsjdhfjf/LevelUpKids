@@ -1,0 +1,459 @@
+/* ======== Fonte ======== */
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+body {
+  font-family: 'Comic Neue', cursive, Arial, sans-serif;
+  background: linear-gradient(135deg, #fceabb, #f8b500);
+  color: #333;
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* ======== Cabeçalho ======== */
+header {
+  background-color: #ff6f91;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(255,111,145,0.4);
+  color: white;
+  text-align: center;
+}
+
+header h1 {
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin: 0;
+  text-shadow: 2px 2px 4px #a63758;
+}
+
+/* ======== Navegação ======== */
+nav {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+nav a {
+  display: inline-block;
+  background-color: #fff3f7;
+  color: #ff6f91;
+  padding: 0.6rem 1rem;
+  margin: 0.3rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 1px 3px 5px rgba(255,111,145,0.3);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  user-select: none;
+}
+#video-promocional {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+#video-promocional video {
+  width: 60%;
+  max-width: 350px;    /* tamanho pequeno */
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+#video-promocional video:hover {
+  transform: scale(1.05);
+}
+
+
+
+nav a:hover {
+  background-color: #ff6f91;
+  color: white;
+  transform: scale(1.1);
+}
+
+nav a.active {
+  background-color: #ff3b6a;
+  color: white;
+  font-weight: 900;
+  box-shadow: 2px 5px 10px rgba(255,59,106,0.6);
+}
+
+/* ======== Layout Container ======== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+/* ======== Cards ======== */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.card {
+  flex: 1 1 280px;
+  max-width: 350px;
+  background-color: #fff9f9;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(255,111,145,0.25);
+  padding: 1rem;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ======== Conteúdo principal ======== */
+main {
+  margin: 2rem auto;
+  max-width: 900px;
+  background-color: #fff9f9;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 15px rgba(255,111,145,0.15);
+  line-height: 1.6;
+  font-size: 1.05rem;
+  color: #4a4a4a;
+  text-align: justify;
+}
+
+h2 {
+  color: #ff6f91;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 1px 1px 2px #ffa3b1;
+}
+
+/* ======== Categorias ======== */
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.categoria {
+  background: #fff3f7;
+  border-radius: 25px;
+  box-shadow: 0 6px 12px rgba(255, 111, 145, 0.25);
+  width: 160px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.categoria img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.categoria h3 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #ff6f91;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.categoria:hover {
+  background: linear-gradient(135deg, #ff9ab5, #ff6f91);
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 10px 18px rgba(255, 111, 145, 0.35);
+}
+
+.categoria:hover img {
+  transform: rotate(10deg) scale(1.2);
+}
+
+.categoria:hover h3 {
+  color: white;
+}
+
+/* ======== Botões ======== */
+button {
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  margin-top: 10px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(255,111,145,0.4);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #ff3b6a;
+  transform: scale(1.05);
+}
+
+/* ======== Rodapé ======== */
+footer {
+  margin-top: 3rem;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #ff6f91;
+  font-weight: 700;
+}
+
+/* ======== Mascote Capivara ======== */
+@keyframes balanco {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(3deg); }
+  50% { transform: translateY(-5px) rotate(-3deg); }
+  75% { transform: translateY(-10px) rotate(3deg); }
+}
+
+#mascote-capivara {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 90px;
+  cursor: pointer;
+  animation: balanco 4s ease-in-out infinite;
+  background-color: #fff9f9;
+  border-radius: 15px;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+#mascote-capivara:hover {
+  animation-play-state: paused;
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* ======== Quiz ======== */
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.pergunta {
+  background-color: #fff3f7;
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 10px rgba(255,111,145,0.2);
+}
+
+.opcao {
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 10px;
+  background-color: #ffeaf0;
+  color: #444;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.opcao:hover {
+  transform: scale(1.05);
+  background-color: #ff6f91;
+  color: #fff;
+}
+
+/* ======== BOTÃO MENU ======== */
+#btn-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 2rem;
+  border-radius: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+#btn-menu:hover {
+  transform: scale(1.1);
+  background-color: #ff3b6a;
+}
+
+/* ======== MENU LATERAL ======== */
+#menu-lateral {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background-color: #fff9f9;
+  box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+  border-radius: 0 20px 20px 0;
+  padding: 25px 15px;
+  transition: left 0.4s ease;
+  z-index: 1000;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#menu-lateral.ativo {
+  left: 0;
+}
+
+/* ======== PERFIL ======== */
+.perfil {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.perfil img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ff6f91;
+  box-shadow: 0 0 10px rgba(255,111,145,0.4);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.perfil img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,111,145,0.6);
+}
+
+.perfil h3 {
+  margin-top: 10px;
+  color: #ff6f91;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* ======== LINKS DO MENU ======== */
+#menu-lateral nav a {
+  display: block;
+  color: #ff6f91;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#menu-lateral nav a:hover {
+  background-color: #ff6f91;
+  color: white;
+  transform: translateX(5px);
+}
+
+/* ======== SOBREPOSIÇÃO ESCURA ======== */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s;
+  z-index: 999;
+}
+
+#overlay.ativo {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ======== RESPONSIVIDADE MENU LATERAL ======== */
+
+/* Tablets e celulares grandes */
+@media (max-width: 992px) {
+  #menu-lateral {
+    width: 220px;
+    padding: 20px 12px;
+  }
+
+  .perfil img {
+    width: 85px;
+    height: 85px;
+  }
+
+  .perfil h3 {
+    font-size: 1rem;
+  }
+
+  #btn-menu {
+    font-size: 1.8rem;
+    padding: 5px 10px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 600px) {
+  #menu-lateral {
+    width: 80%;
+    left: -100%;
+    border-radius: 0 15px 15px 0;
+    padding: 18px 10px;
+  }
+
+  #menu-lateral.ativo {
+    left: 0;
+  }
+
+  #btn-menu {
+    top: 15px;
+    left: 15px;
+    font-size: 1.6rem;
+  }
+
+  .perfil img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .perfil h3 {
+    font-size: 0.95rem;
+  }
+
+  #menu-lateral nav a {
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+}
+

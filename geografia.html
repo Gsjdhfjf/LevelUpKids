@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercícios de Geografia</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header>
+    <h1>Geografia</h1>
+    <nav>
+      <a href="index.html">Menu</a>
+      <a href="Português.html">Português</a>
+      <a href="matematica.html">Matemática</a>
+      <a href="historia.html">História</a>
+      <a href="geografia.html" class="active">Geografia</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Exercícios Didáticos</h2>
+    <p style="text-align:center;">Aprenda Geografia enquanto ganha pontos! 🌍</p>
+
+    <div id="pontuacao">Pontuação: <span id="pontos">0</span></div>
+
+    <div class="quiz-container">
+      <div id="pergunta-container" class="pergunta">
+        <p id="texto-pergunta"></p>
+        <div id="opcoes"></div>
+      </div>
+    </div>
+
+    <button id="reiniciar">Reiniciar Jogo</button>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva - 1°DS</p>
+  </footer>
+
+  <img
+    src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+    alt="Mascote Capivara"
+    id="mascote-capivara"
+    title="Olá! Eu sou a capivara mascote :)"
+  />
+
+  <script>
+    const bancoPerguntas = [
+      {q:"Qual é a capital do Brasil?", o:["Brasília","São Paulo","Rio de Janeiro"], r:0, tipo:"escrita"},
+      {q:"Qual é o maior país do mundo?", o:["Rússia","Canadá","China"], r:0, tipo:"escrita"},
+      {q:"Qual é o menor país do mundo?", o:["Vaticano","Mônaco","Nauru"], r:0, tipo:"escrita"},
+      {q:"Qual desses países fica na Europa?", o:["Brasil","Alemanha","Argentina"], r:1, tipo:"vocabulario"},
+      {q:"Qual é o continente da Austrália?", o:["Oceania","África","América"], r:0, tipo:"vocabulario"},
+      {q:"Qual é o rio mais longo do mundo?", o:["Nilo","Amazonas","Yangtzé"], r:1, tipo:"escrita"},
+      {q:"Qual é o maior oceano?", o:["Atlântico","Índico","Pacífico"], r:2, tipo:"vocabulario"},
+      {q:"Em qual continente fica o Egito?", o:["África","Ásia","Europa"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a capital da França?", o:["Paris","Lyon","Marselha"], r:0, tipo:"escrita"},
+      {q:"Qual país tem maior população?", o:["Índia","Brasil","China"], r:2, tipo:"vocabulario"},
+      {q:"Qual é a capital da Argentina?", o:["Buenos Aires","Rosário","Córdoba"], r:0, tipo:"escrita"},
+      {q:"Qual é a capital do Japão?", o:["Tóquio","Kyoto","Osaka"], r:0, tipo:"escrita"},
+      {q:"Qual é o maior deserto do mundo?", o:["Saara","Gobi","Kalahari"], r:0, tipo:"vocabulario"},
+      {q:"Em qual continente fica o Canadá?", o:["América do Norte","América do Sul","Europa"], r:0, tipo:"vocabulario"},
+      {q:"Qual é o país conhecido como Terra do Sol Nascente?", o:["China","Japão","Coreia do Sul"], r:1, tipo:"vocabulario"},
+      {q:"Qual é a capital do México?", o:["Cidade do México","Guadalajara","Monterrey"], r:0, tipo:"escrita"},
+      {q:"Qual é o continente da Nigéria?", o:["África","Ásia","Europa"], r:0, tipo:"vocabulario"},
+      {q:"Qual é o país com maior área na América do Sul?", o:["Argentina","Brasil","Peru"], r:1, tipo:"vocabulario"},
+      {q:"Qual é o ponto mais alto do mundo?", o:["Monte Everest","K2","Kangchenjunga"], r:0, tipo:"vocabulario"},
+      {q:"Qual é o país conhecido pelos fiordes?", o:["Noruega","Suíça","Finlândia"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a capital da Itália?", o:["Roma","Milão","Veneza"], r:0, tipo:"escrita"},
+      {q:"Qual é o país mais populoso da África?", o:["Nigéria","Egito","África do Sul"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a capital da Alemanha?", o:["Berlim","Hamburgo","Munique"], r:0, tipo:"escrita"},
+      {q:"Qual é o continente da Argentina?", o:["América do Sul","América do Norte","Europa"], r:0, tipo:"vocabulario"},
+      {q:"Qual é o rio mais extenso da América do Sul?", o:["Amazonas","São Francisco","Paraná"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a capital do Canadá?", o:["Toronto","Ottawa","Vancouver"], r:1, tipo:"escrita"},
+      {q:"Qual é o maior lago da África?", o:["Tanganica","Vitoria","Malawi"], r:0, tipo:"vocabulario"},
+      {q:"Qual país possui o maior número de ilhas?", o:["Indonésia","Canadá","Noruega"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a capital da Espanha?", o:["Madri","Barcelona","Valência"], r:0, tipo:"escrita"},
+      {q:"Qual é o país mais frio do mundo?", o:["Rússia","Canadá","Antártida"], r:2, tipo:"vocabulario"}
+    ];
+
+    let perguntasAtuais = [];
+    let pontos = 0;
+    let indiceAtual = 0;
+
+    const pontosEl = document.getElementById('pontos');
+    const textoPergunta = document.getElementById('texto-pergunta');
+    const opcoesEl = document.getElementById('opcoes');
+    const reiniciarBtn = document.getElementById('reiniciar');
+
+    const somAcerto = new Audio('acerto.mp3');
+    const somErro = new Audio('errou.mp3');
+    const somFinal = new Audio('final.mp3');
+
+    function iniciarJogo() {
+      pontos = 0;
+      indiceAtual = 0;
+      pontosEl.textContent = pontos;
+
+      const escrita = bancoPerguntas.filter(p => p.tipo === "escrita");
+      const outras = bancoPerguntas.filter(p => p.tipo !== "escrita");
+      const selecionadas = [];
+
+      // 3 de escrita
+      while (selecionadas.length < 3) {
+        const i = Math.floor(Math.random() * escrita.length);
+        selecionadas.push(escrita.splice(i,1)[0]);
+      }
+
+      // 7 das outras
+      while (selecionadas.length < 10) {
+        const i = Math.floor(Math.random() * outras.length);
+        selecionadas.push(outras.splice(i,1)[0]);
+      }
+
+      perguntasAtuais = selecionadas.sort(() => Math.random()-0.5);
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      if (indiceAtual >= perguntasAtuais.length) {
+        textoPergunta.textContent = " Fim do jogo! Sua pontuação: " + pontos;
+        opcoesEl.innerHTML = "";
+        somFinal.play();
+        return;
+      }
+      
+      const pergunta = perguntasAtuais[indiceAtual];
+      textoPergunta.textContent = pergunta.q;
+      opcoesEl.innerHTML = "";
+
+      pergunta.o.forEach((op, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('opcao');
+        btn.textContent = op;
+        btn.dataset.indice = i;
+        btn.addEventListener('click', () => responder(i, pergunta.r));
+        opcoesEl.appendChild(btn);
+      });
+    }
+
+    function responder(indice, correto) {
+      const botoes = document.querySelectorAll('.opcao');
+      botoes.forEach(btn => btn.disabled = true);
+
+      if(indice === correto) {
+        pontos += 10;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#9bff9b';
+        somAcerto.play();
+      } else {
+        pontos -= 5;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#ff9b9b';
+        botoes[correto].style.backgroundColor = '#9bff9b';
+        somErro.play();
+      }
+
+      indiceAtual++;
+      setTimeout(mostrarPergunta, 1000);
+    }
+
+    reiniciarBtn.addEventListener('click', iniciarJogo);
+
+    iniciarJogo();
+  </script>
+</body>
+</html>

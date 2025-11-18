@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercícios de História</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header>
+    <h1>História</h1>
+    <nav>
+      <a href="index.html">Menu</a>
+      <a href="Português.html">Português</a>
+      <a href="matematica.html">Matemática</a>
+      <a href="historia.html" class="active">História</a>
+      <a href="geografia.html">Geografia</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Exercícios Didáticos</h2>
+    <p style="text-align:center;">Aprenda História enquanto ganha pontos! 🏛️</p>
+
+    <div id="pontuacao">Pontuação: <span id="pontos">0</span></div>
+
+    <div class="quiz-container">
+      <div id="pergunta-container" class="pergunta">
+        <p id="texto-pergunta"></p>
+        <div id="opcoes"></div>
+      </div>
+    </div>
+
+    <button id="reiniciar">Reiniciar Jogo</button>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva - 1°DS</p>
+  </footer>
+
+  <img
+    src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+    alt="Mascote Capivara"
+    id="mascote-capivara"
+    title="Olá! Eu sou a capivara mascote :)"
+  />
+
+  <script>
+    const bancoPerguntas = [
+      {q:"Quem descobriu o Brasil?", o:["Pedro Álvares Cabral","Cristóvão Colombo","Vasco da Gama"], r:0, tipo:"escrita"},
+      {q:"Em que ano aconteceu a independência do Brasil?", o:["1822","1808","1889"], r:0, tipo:"escrita"},
+      {q:"Quem foi o primeiro presidente do Brasil?", o:["Deodoro da Fonseca","Getúlio Vargas","Juscelino Kubitschek"], r:0, tipo:"escrita"},
+      {q:"Qual foi a primeira civilização da Mesopotâmia?", o:["Sumérios","Egípcios","Maias"], r:0, tipo:"vocabulario"},
+      {q:"Qual foi o período da Idade Média?", o:["476-1453","500-1500","400-1400"], r:0, tipo:"vocabulario"},
+      {q:"Quem escreveu a Declaração de Independência dos EUA?", o:["Thomas Jefferson","George Washington","Benjamin Franklin"], r:0, tipo:"vocabulario"},
+      {q:"Qual foi o líder da Revolução Francesa?", o:["Maximilien Robespierre","Napoleão Bonaparte","Louis XVI"], r:0, tipo:"vocabulario"},
+      {q:"Quando começou a 2ª Guerra Mundial?", o:["1939","1914","1945"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi Dom Pedro I?", o:["Primeiro imperador do Brasil","Explorador","Presidente"], r:0, tipo:"vocabulario"},
+      {q:"Qual era a capital do Império Romano?", o:["Roma","Atenas","Cartago"], r:0, tipo:"vocabulario"},
+      {q:"Quando ocorreu a Revolução Industrial?", o:["Século XVIII","Século XVII","Século XIX"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi o líder do nazismo?", o:["Adolf Hitler","Joseph Stalin","Benito Mussolini"], r:0, tipo:"vocabulario"},
+      {q:"O que foi a Guerra Fria?", o:["Conflito ideológico EUA vs URSS","Guerra física","Invasão de países"], r:0, tipo:"vocabulario"},
+      {q:"Qual país inventou a pólvora?", o:["China","Índia","Egito"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi responsável pela Revolução Russa?", o:["Lenin","Stalin","Trotsky"], r:0, tipo:"vocabulario"},
+      {q:"Em que ano ocorreu a queda do muro de Berlim?", o:["1989","1991","1985"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi Napoleão Bonaparte?", o:["Imperador francês","Rei da Inglaterra","General romano"], r:0, tipo:"vocabulario"},
+      {q:"O que foi o Renascimento?", o:["Movimento cultural europeu","Revolução tecnológica","Guerra"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi Martin Luther King?", o:["Líder dos direitos civis","Presidente","Ator"], r:0, tipo:"vocabulario"},
+      {q:"O que marcou a Revolução Francesa?", o:["Queda da Bastilha","Descobrimento da América","Guerra Napoleônica"], r:0, tipo:"vocabulario"},
+      {q:"Quando começou a Primeira Guerra Mundial?", o:["1914","1939","1920"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi o faraó mais famoso do Egito?", o:["Tutancâmon","Ramsés II","Cleópatra"], r:0, tipo:"vocabulario"},
+      {q:"O que foi o Iluminismo?", o:["Movimento intelectual","Guerra mundial","Revolução industrial"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi o primeiro homem a pisar na Lua?", o:["Neil Armstrong","Buzz Aldrin","Yuri Gagarin"], r:0, tipo:"vocabulario"},
+      {q:"Quando foi a Proclamação da República no Brasil?", o:["1889","1822","1808"], r:0, tipo:"vocabulario"},
+      {q:"Quem liderou a independência dos EUA?", o:["George Washington","Thomas Jefferson","Abraham Lincoln"], r:1, tipo:"vocabulario"},
+      {q:"O que foi a Idade Antiga?", o:["Período entre 4000 a.C e 476 d.C","Idade Média","Idade Moderna"], r:0, tipo:"vocabulario"},
+      {q:"Quem foi responsável pela Revolução Francesa?", o:["Robespierre","Napoleão","Louis XVI"], r:0, tipo:"vocabulario"},
+      {q:"Quando ocorreu a queda do Império Romano?", o:["476 d.C","1453","500"], r:0, tipo:"vocabulario"},
+      {q:"O que foi a Revolução Industrial?", o:["Mudança na produção com máquinas","Descobrimento da América","Guerra"], r:0, tipo:"vocabulario"}
+    ];
+
+    let perguntasAtuais = [];
+    let pontos = 0;
+    let indiceAtual = 0;
+
+    const pontosEl = document.getElementById('pontos');
+    const textoPergunta = document.getElementById('texto-pergunta');
+    const opcoesEl = document.getElementById('opcoes');
+    const reiniciarBtn = document.getElementById('reiniciar');
+
+    const somAcerto = new Audio('acerto.mp3');
+    const somErro = new Audio('errou.mp3');
+    const somFinal = new Audio('final.mp3');
+
+    function iniciarJogo() {
+      pontos = 0;
+      indiceAtual = 0;
+      pontosEl.textContent = pontos;
+
+      const escrita = bancoPerguntas.filter(p => p.tipo === "escrita");
+      const outras = bancoPerguntas.filter(p => p.tipo !== "escrita");
+      const selecionadas = [];
+
+      // 3 de escrita
+      while (selecionadas.length < 3) {
+        const i = Math.floor(Math.random() * escrita.length);
+        selecionadas.push(escrita.splice(i,1)[0]);
+      }
+
+      // 7 das outras
+      while (selecionadas.length < 10) {
+        const i = Math.floor(Math.random() * outras.length);
+        selecionadas.push(outras.splice(i,1)[0]);
+      }
+
+      perguntasAtuais = selecionadas.sort(() => Math.random()-0.5);
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      if (indiceAtual >= perguntasAtuais.length) {
+        textoPergunta.textContent = " Fim do jogo! Sua pontuação: " + pontos;
+        opcoesEl.innerHTML = "";
+        somFinal.play();
+        return;
+      }
+      
+      const pergunta = perguntasAtuais[indiceAtual];
+      textoPergunta.textContent = pergunta.q;
+      opcoesEl.innerHTML = "";
+
+      pergunta.o.forEach((op, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('opcao');
+        btn.textContent = op;
+        btn.dataset.indice = i;
+        btn.addEventListener('click', () => responder(i, pergunta.r));
+        opcoesEl.appendChild(btn);
+      });
+    }
+
+    function responder(indice, correto) {
+      const botoes = document.querySelectorAll('.opcao');
+      botoes.forEach(btn => btn.disabled = true);
+
+      if(indice === correto) {
+        pontos += 10;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#9bff9b';
+        somAcerto.play();
+      } else {
+        pontos -= 5;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#ff9b9b';
+        botoes[correto].style.backgroundColor = '#9bff9b';
+        somErro.play();
+      }
+
+      indiceAtual++;
+      setTimeout(mostrarPergunta, 1000);
+    }
+
+    reiniciarBtn.addEventListener('click', iniciarJogo);
+
+    iniciarJogo();
+  </script>
+</body>
+</html>

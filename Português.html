@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercícios de Português</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header>
+    <h1>Português</h1>
+    <nav>
+      <a href="index.html">Menu</a>
+      <a href="portugues.html" class="active">Português</a>
+      <a href="matematica.html">Matemática</a>
+      <a href="historia.html">História</a>
+      <a href="geografia.html">Geografia</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Exercícios Didáticos</h2>
+    <p style="text-align:center;">Acerte as perguntas e ganhe pontos! 🏆</p>
+
+    <div id="pontuacao">Pontuação: <span id="pontos">0</span></div>
+
+    <div class="quiz-container">
+      <div id="pergunta-container" class="pergunta">
+        <p id="texto-pergunta"></p>
+        <div id="opcoes"></div>
+      </div>
+    </div>
+
+    <button id="reiniciar">Reiniciar Jogo</button>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva - 1°DS</p>
+  </footer>
+
+  <img
+    src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+    alt="Mascote Capivara"
+    id="mascote-capivara"
+    title="Olá! Eu sou a capivara mascote :)"
+  />
+
+  <script>
+    const bancoPerguntas = [
+      {q:"Qual dessas palavras está escrita corretamente?", o:["Enxegar","Enxergar","Enxergar"], r:1, tipo:"escrita"},
+      {q:"Qual é o plural de 'pão'?", o:["Pães","Pãos","Pãoses"], r:0, tipo:"gramatica"},
+      {q:"Complete: 'A menina ____ um livro.'", o:["le","lêem","lê"], r:2, tipo:"gramatica"},
+      {q:"Qual é o antônimo de 'feliz'?", o:["triste","alegre","contente"], r:0, tipo:"vocabulario"},
+      {q:"Qual palavra está com acento correto?", o:["aviao","avião","aviáo"], r:1, tipo:"escrita"},
+      {q:"Plural de 'coração'?", o:["corações","coraçãos","coraçones"], r:0, tipo:"gramatica"},
+      {q:"Complete: 'Ele ____ na escola.'", o:["estuda","estudam","estudou"], r:0, tipo:"gramatica"},
+      {q:"Qual dessas palavras é substantivo?", o:["correr","bonito","livro"], r:2, tipo:"vocabulario"},
+      {q:"Qual é o feminino de 'ator'?", o:["atora","atriz","atores"], r:1, tipo:"gramatica"},
+      {q:"Qual é a forma correta: 'menas' ou 'menos'?", o:["menas","menos"], r:1, tipo:"escrita"},
+      {q:"Plural de 'flor'?", o:["flores","flors","flôres"], r:0, tipo:"gramatica"},
+      {q:"Qual é o sinônimo de 'rápido'?", o:["devagar","ligeiro","preguiçoso"], r:1, tipo:"vocabulario"},
+      {q:"Complete: 'Eles ____ amigos.'", o:["são","é","ser"], r:0, tipo:"gramatica"},
+      {q:"Qual palavra está escrita corretamente?", o:["difícil","dificil","difiçil"], r:0, tipo:"escrita"},
+      {q:"Qual é o plural de 'papel'?", o:["papéis","papels","papeis"], r:0, tipo:"gramatica"},
+      {q:"Complete: 'Nós ____ felizes.'", o:["estamos","está","estão"], r:0, tipo:"gramatica"},
+      {q:"Qual dessas palavras é verbo?", o:["bonito","correr","casa"], r:1, tipo:"vocabulario"},
+      {q:"Qual é o feminino de 'rei'?", o:["rainha","reia","reis"], r:0, tipo:"gramatica"},
+      {q:"Qual palavra tem hífen correto?", o:["guarda-chuva","guardachuva","guarda chuva"], r:0, tipo:"escrita"},
+      {q:"Complete: 'Eu ____ estudar.'", o:["gosta","gosto","gostam"], r:1, tipo:"gramatica"},
+      {q:"Plural de 'animal'?", o:["animais","animals","animaes"], r:0, tipo:"gramatica"},
+      {q:"Qual é o antônimo de 'grande'?", o:["pequeno","alto","enorme"], r:0, tipo:"vocabulario"},
+      {q:"Complete: 'Ele ____ o livro na mesa.'", o:["coloca","colocou","colocam"], r:1, tipo:"gramatica"},
+      {q:"Qual dessas palavras é adjetivo?", o:["verde","correr","felicidade"], r:0, tipo:"vocabulario"},
+      {q:"Qual é a forma correta: 'excessão' ou 'exceção'?", o:["excessão","exceção"], r:1, tipo:"escrita"},
+      {q:"Plural de 'lápis'?", o:["lápis","lápises","lapis"], r:0, tipo:"gramatica"},
+      {q:"Complete: 'Nós ____ ao parque.'", o:["vamos","vai","vão"], r:0, tipo:"gramatica"},
+      {q:"Qual palavra está escrita corretamente?", o:["ônibus","onibus","ônibuss"], r:0, tipo:"escrita"},
+      {q:"Qual é o feminino de 'tigre'?", o:["tigresa","tigra","tigres"], r:0, tipo:"gramatica"},
+      {q:"Complete: 'Ela ____ cantar.'", o:["gosta","gosta de","gostou"], r:0, tipo:"gramatica"},
+      {q:"Qual é o sinônimo de 'bonito'?", o:["feio","lindo","ruim"], r:1, tipo:"vocabulario"}
+    ];
+
+    let perguntasAtuais = [];
+    let pontos = 0;
+    let indiceAtual = 0;
+
+    const pontosEl = document.getElementById('pontos');
+    const textoPergunta = document.getElementById('texto-pergunta');
+    const opcoesEl = document.getElementById('opcoes');
+    const reiniciarBtn = document.getElementById('reiniciar');
+
+    // Sons (adicione seus arquivos)
+    const somAcerto = new Audio('acerto.mp3');
+    const somErro = new Audio('errou.mp3');
+    const somFinal = new Audio('final.mp3'); // SOM DE VITÓRIA
+
+    function iniciarJogo() {
+      pontos = 0;
+      indiceAtual = 0;
+      pontosEl.textContent = pontos;
+
+      // escolher 10 perguntas aleatórias garantindo 3 de escrita
+      const escrita = bancoPerguntas.filter(p => p.tipo === "escrita");
+      const outras = bancoPerguntas.filter(p => p.tipo !== "escrita");
+      const selecionadas = [];
+
+      // 3 de escrita
+      while (selecionadas.length < 3) {
+        const i = Math.floor(Math.random() * escrita.length);
+        selecionadas.push(escrita.splice(i,1)[0]);
+      }
+
+      // 7 das outras
+      while (selecionadas.length < 10) {
+        const i = Math.floor(Math.random() * outras.length);
+        selecionadas.push(outras.splice(i,1)[0]);
+      }
+
+      // embaralhar
+      perguntasAtuais = selecionadas.sort(() => Math.random()-0.5);
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      if (indiceAtual >= perguntasAtuais.length) {
+        textoPergunta.textContent = " Fim do jogo! Sua pontuação: " + pontos;
+        opcoesEl.innerHTML = "";
+        somFinal.play(); // toca o som de vitória
+        return;
+      }
+      
+      const pergunta = perguntasAtuais[indiceAtual];
+      textoPergunta.textContent = pergunta.q;
+      opcoesEl.innerHTML = "";
+
+      pergunta.o.forEach((op, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('opcao');
+        btn.textContent = op;
+        btn.dataset.indice = i;
+        btn.addEventListener('click', () => responder(i, pergunta.r));
+        opcoesEl.appendChild(btn);
+      });
+    }
+
+    function responder(indice, correto) {
+      const botoes = document.querySelectorAll('.opcao');
+      botoes.forEach(btn => btn.disabled = true);
+
+      if(indice === correto) {
+        pontos += 10;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#9bff9b';
+        somAcerto.play();
+      } else {
+        pontos -= 5;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#ff9b9b';
+        botoes[correto].style.backgroundColor = '#9bff9b';
+        somErro.play();
+      }
+
+      indiceAtual++;
+      setTimeout(mostrarPergunta, 1000);
+    }
+
+    reiniciarBtn.addEventListener('click', iniciarJogo);
+
+    // inicia automaticamente
+    iniciarJogo();
+  </script>
+</body>
+</html>

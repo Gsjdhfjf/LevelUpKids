@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercícios de Matemática</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Matemática</h1>
+    <nav>
+      <a href="index.html">Menu</a>
+      <a href="Português.html">Português</a>
+      <a href="matematica.html" class="active">Matemática</a>
+      <a href="historia.html">História</a>
+      <a href="geografia.html">Geografia</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Exercícios Didáticos</h2>
+    <p style="text-align:center;">Escolha uma categoria para começar a praticar e ganhar pontos! 🏆</p>
+
+    <div class="categorias">
+      <div class="categoria" data-categoria="formas" tabindex="0" aria-label="Categoria Formas">
+        <img src="https://png.pngtree.com/png-clipart/20230122/original/pngtree-watercolor-pink-shape-frame-for-wedding-invitation-png-image_8926867.png" alt="Ícone Formas" />
+        <h3>Formas</h3>
+      </div>
+      <div class="categoria" data-categoria="contas" tabindex="0" aria-label="Categoria Contas">
+        <img src="https://img.icons8.com/ios-filled/100/ff6f91/calculator.png" alt="Ícone Contas" />
+        <h3>Contas</h3>
+      </div>
+      <div class="categoria" data-categoria="calculos" tabindex="0" aria-label="Categoria Cálculos">
+        <img src="https://img.icons8.com/ios-filled/100/ff6f91/math.png" alt="Ícone Cálculos" />
+        <h3>Cálculos</h3>
+      </div>
+      <div class="categoria" data-categoria="geometria" tabindex="0" aria-label="Categoria Geometria">
+        <img src="Imagens/geom.png" alt="Ícone Geometria" />
+        <h3>Geometria</h3>
+      </div>
+    </div>
+
+    <div id="pontuacao">Pontuação: <span id="pontos">0</span></div>
+
+    <div class="quiz-container" hidden>
+      <div id="pergunta-container" class="pergunta">
+        <p id="texto-pergunta"></p>
+        <div id="opcoes"></div>
+      </div>
+      <button id="reiniciar">Reiniciar Jogo</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>João Víctor Silva Rodrigues / Gabriel Paiva - 1°DS</p>
+  </footer>
+
+  <img src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg" alt="Mascote Capivara"
+    id="mascote-capivara" title="Olá! Eu sou a capivara mascote :)" />
+
+  <script>
+    // Banco de perguntas dividido por categoria
+    const bancoPerguntas = {
+  formas: [
+    { q: "Quantos lados tem um triângulo?", o: ["3", "4", "5"], r: 0, tipo: "vocabulario" },
+    { q: "Qual forma tem todos os lados iguais?", o: ["Quadrado", "Retângulo", "Trapézio"], r: 0, tipo: "vocabulario" },
+    { q: "Qual dessas é uma figura circular?", o: ["Círculo", "Quadrado", "Triângulo"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um pentágono?", o: ["4", "5", "6"], r: 1, tipo: "vocabulario" },
+    { q: "Qual figura tem 90 graus em seus ângulos?", o: ["Triângulo", "Quadrado", "Círculo"], r: 1, tipo: "vocabulario" },
+    { q: "Um círculo tem quantos lados?", o: ["Nenhum", "1", "Infinitos"], r: 0, tipo: "vocabulario" },
+    { q: "Qual figura é um paralelogramo?", o: ["Quadrado", "Círculo", "Triângulo"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos vértices tem um cubo?", o: ["6", "8", "12"], r: 1, tipo: "vocabulario" },
+    { q: "Qual dessas é uma forma tridimensional?", o: ["Quadrado", "Cubo", "Triângulo"], r: 1, tipo: "vocabulario" },
+    { q: "Quantos lados tem um hexágono?", o: ["5", "6", "7"], r: 1, tipo: "vocabulario" },
+    { q: "Qual forma tem diagonais iguais?", o: ["Quadrado", "Retângulo", "Trapézio"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é a forma de uma moeda?", o: ["Círculo", "Triângulo", "Quadrado"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um octógono?", o: ["7", "8", "9"], r: 1, tipo: "vocabulario" },
+    { q: "Qual figura não possui lados?", o: ["Triângulo", "Círculo", "Quadrado"], r: 1, tipo: "vocabulario" },
+    { q: "Qual figura possui apenas um lado?", o: ["Círculo", "Retângulo", "Trapézio"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um losango?", o: ["4", "5", "6"], r: 0, tipo: "vocabulario" },
+    { q: "Qual dessas formas tem ângulos retos?", o: ["Quadrado", "Triângulo", "Círculo"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados têm figura conhecida como pentágono?", o: ["5", "6", "7"], r: 0, tipo: "vocabulario" },
+    { q: "Qual figura é famosa por ser usada na bandeira do Brasil?", o: ["Losango", "Círculo", "Quadrado"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a forma de um dado comum?", o: ["Cubo", "Esfera", "Cilindro"], r: 0, tipo: "vocabulario" },
+    { q: "Qual forma tem lados paralelos opostos?", o: ["Paralelogramo", "Triângulo", "Círculo"], r: 0, tipo: "vocabulario" },
+    { q: "Qual dessas figuras tem 12 arestas?", o: ["Cubo", "Esfera", "Pirâmide"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é o nome da forma geométrica de um pneu?", o: ["Toroide", "Cilindro", "Cubo"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um heptágono?", o: ["6", "7", "8"], r: 1, tipo: "vocabulario" },
+    { q: "Qual forma é utilizada para representar chapéus pontudos?", o: ["Cone", "Cubo", "Esfera"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos vértices tem uma pirâmide quadrangular?", o: ["4", "5", "6"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é a forma de um copo cilíndrico?", o: ["Cilindro", "Cone", "Cubo"], r: 0, tipo: "vocabulario" },
+    { q: "Qual figura tem todos os lados diferentes?", o: ["Trapézio", "Quadrado", "Retângulo"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a forma de uma bolinha de futebol?", o: ["Esfera", "Cubo", "Cone"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um decágono?", o: ["9", "10", "11"], r: 1, tipo: "vocabulario" }
+  ],
+  contas: [
+    { q: "5 + 7 = ?", o: ["12", "11", "13"], r: 0, tipo: "escrita" },
+    { q: "8 - 3 = ?", o: ["5", "6", "4"], r: 0, tipo: "escrita" },
+    { q: "Qual é o resultado de 9+6?", o: ["14", "15", "16"], r: 1, tipo: "escrita" },
+    { q: "10 - 4 = ?", o: ["6", "5", "7"], r: 0, tipo: "escrita" },
+    { q: "7 + 5 = ?", o: ["11", "12", "13"], r: 1, tipo: "escrita" },
+    { q: "20 - 7 = ?", o: ["12", "13", "14"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 25 - 9?", o: ["16", "15", "17"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 14 + 7?", o: ["20", "21", "22"], r: 1, tipo: "escrita" },
+    { q: "Complete: 5 + ___ = 10", o: ["4", "5", "3"], r: 0, tipo: "escrita" },
+    { q: "Qual número é maior?", o: ["12", "15", "10"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é a soma de 15 + 13?", o: ["27", "28", "29"], r: 1, tipo: "escrita" },
+    { q: "Quantos segundos tem 2 minutos?", o: ["100", "120", "180"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é o valor de 100 - 45?", o: ["55", "56", "54"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 7 + 8?", o: ["14", "15", "16"], r: 1, tipo: "escrita" },
+    { q: "Complete: 18 - ___ = 7", o: ["11", "10", "9"], r: 0, tipo: "escrita" },
+    { q: "Qual é o resultado de 3 + 3?", o: ["5", "6", "7"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 50 - 20?", o: ["30", "35", "40"], r: 0, tipo: "escrita" },
+    { q: "Quantos dias tem uma semana?", o: ["5", "6", "7"], r: 2, tipo: "vocabulario" },
+    { q: "Qual é o resultado da soma 100 + 200?", o: ["300", "350", "250"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 9 + 10?", o: ["18", "19", "20"], r: 1, tipo: "escrita" },
+    { q: "Qual é o valor de 6 menos 2?", o: ["3", "4", "5"], r: 1, tipo: "escrita" },
+    { q: "Complete: 8 + ___ = 15", o: ["7", "6", "8"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 3 vezes 4?", o: ["11", "12", "13"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 50 - 30?", o: ["20", "25", "15"], r: 0, tipo: "escrita" },
+    { q: "Qual é o resultado de 11 + 11?", o: ["21", "22", "23"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 18 - 9?", o: ["8", "9", "10"], r: 1, tipo: "escrita" },
+    { q: "Complete: 100 - ___ = 70", o: ["20", "30", "40"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 10 + 12?", o: ["21", "22", "23"], r: 1, tipo: "escrita" },
+    { q: "Qual é o valor de 13 - 7?", o: ["5", "6", "7"], r: 1, tipo: "escrita" },
+    { q: "Quantos minutos tem uma hora?", o: ["50", "55", "60"], r: 2, tipo: "vocabulario" }
+  ],
+  calculos: [
+    { q: "10 x 2 = ?", o: ["20", "12", "22"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 18 ÷ 2?", o: ["8", "9", "10"], r: 1, tipo: "escrita" },
+    { q: "Complete: 7 + ___ = 10", o: ["2", "3", "4"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 6 x 6?", o: ["36", "35", "32"], r: 0, tipo: "escrita" },
+    { q: "Complete: 9 x ___ = 27", o: ["2", "3", "4"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 12 ÷ 4?", o: ["2", "3", "4"], r: 1, tipo: "escrita" },
+    { q: "Complete: 18 ÷ ___ = 6", o: ["2", "3", "4"], r: 1, tipo: "escrita" },
+    { q: "Qual é o triplo de 6?", o: ["18", "16", "20"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é o dobro de 8?", o: ["16", "14", "18"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a metade de 20?", o: ["10", "8", "12"], r: 0, tipo: "vocabulario" },
+    { q: "Quanto é 15 x 3?", o: ["45", "40", "50"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 81 ÷ 9?", o: ["8", "9", "10"], r: 1, tipo: "escrita" },
+    { q: "Complete: 5 x ___ = 25", o: ["4", "5", "6"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 7 x 8?", o: ["54", "56", "58"], r: 1, tipo: "escrita" },
+    { q: "Complete: 36 ÷ ___ = 6", o: ["5", "6", "7"], r: 1, tipo: "escrita" },
+    { q: "Qual é o triplo de 7?", o: ["21", "20", "19"], r: 0, tipo: "vocabulario" },
+    { q: "Quanto é 14 x 2?", o: ["28", "26", "24"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 49 ÷ 7?", o: ["6", "7", "8"], r: 1, tipo: "escrita" },
+    { q: "Complete: 8 x ___ = 64", o: ["6", "7", "8"], r: 2, tipo: "escrita" },
+    { q: "Quanto é 11 x 11?", o: ["121", "111", "131"], r: 0, tipo: "escrita" },
+    { q: "Complete: 90 ÷ ___ = 15", o: ["5", "6", "7"], r: 0, tipo: "escrita" },
+    { q: "Qual é a metade de 50?", o: ["20", "25", "30"], r: 1, tipo: "vocabulario" },
+    { q: "Quanto é 13 x 4?", o: ["52", "50", "48"], r: 0, tipo: "escrita" },
+    { q: "Complete: 60 ÷ ___ = 10", o: ["5", "6", "7"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 20 x 3?", o: ["60", "65", "55"], r: 0, tipo: "escrita" },
+    { q: "Complete: 100 ÷ ___ = 20", o: ["4", "5", "6"], r: 1, tipo: "escrita" },
+    { q: "Quanto é 9 x 9?", o: ["81", "79", "83"], r: 0, tipo: "escrita" },
+    { q: "Quanto é 7 x 7?", o: ["48", "49", "50"], r: 1, tipo: "escrita" },
+    { q: "Complete: 80 ÷ ___ = 10", o: ["7", "8", "9"], r: 1, tipo: "escrita" },
+    { q: "Qual é o triplo de 9?", o: ["26", "27", "28"], r: 1, tipo: "vocabulario" },
+    { q: "Quanto é 16 x 2?", o: ["30", "31", "32"], r: 2, tipo: "escrita" }
+  ],
+  geometria: [
+    { q: "Qual é a raiz quadrada de 64?", o: ["6", "8", "10"], r: 1, tipo: "vocabulario" },
+    { q: "Complete: 18 ÷ ___ = 6", o: ["2", "3", "4"], r: 1, tipo: "escrita" },
+    { q: "Qual número é múltiplo de 5?", o: ["6", "10", "12"], r: 1, tipo: "vocabulario" },
+    { q: "Quantos ângulos tem um quadrado?", o: ["3", "4", "5"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é a soma dos ângulos internos de um triângulo?", o: ["90°", "180°", "360°"], r: 1, tipo: "vocabulario" },
+    { q: "O que é um raio em um círculo?", o: ["Metade do diâmetro", "O perímetro", "Parte interna"], r: 0, tipo: "vocabulario" },
+    { q: "Qual figura tem lados iguais e ângulos retos?", o: ["Retângulo", "Losango", "Trapézio"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos vértices tem um cubo?", o: ["6", "8", "12"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é o perímetro de um quadrado de lado 4?", o: ["12", "16", "20"], r: 1, tipo: "escrita" },
+    { q: "Quantos graus tem um ângulo reto?", o: ["45°", "90°", "180°"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é o volume de um cubo de aresta 3?", o: ["9", "27", "18"], r: 1, tipo: "escrita" },
+    { q: "Qual é a área de um triângulo base 8 e altura 5?", o: ["20", "40", "13"], r: 0, tipo: "escrita" },
+    { q: "O círculo tem quantos graus?", o: ["180°", "360°", "90°"], r: 1, tipo: "vocabulario" },
+    { q: "Qual o nome do polígono de 6 lados?", o: ["Pentágono", "Hexágono", "Heptágono"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é a soma dos ângulos internos de um quadrado?", o: ["180°", "360°", "90°"], r: 1, tipo: "vocabulario" },
+    { q: "O que é uma circunferência?", o: ["Linha fechada", "Figura 3D", "Ângulo"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados tem um dodecágono?", o: ["10", "12", "14"], r: 1, tipo: "vocabulario" },
+    { q: "Qual é o nome do polígono com 4 lados iguais?", o: ["Quadrado", "Retângulo", "Trapézio"], r: 0, tipo: "vocabulario" },
+    { q: "Qual figura possui todos os lados diferentes?", o: ["Trapézio", "Quadrado", "Retângulo"], r: 0, tipo: "vocabulario" },
+    { q: "Como chamamos o ponto onde se encontram dois lados de um polígono?", o: ["Vértice", "Aresta", "Face"], r: 0, tipo: "vocabulario" },
+    { q: "O que é uma aresta?", o: ["Linha entre vértices", "Ponto", "Área"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos vértices tem uma pirâmide triangular?", o: ["3", "4", "5"], r: 1, tipo: "vocabulario" },
+    { q: "Qual a fórmula da área do círculo?", o: ["π x raio²", "2 x π x raio", "π x diâmetro"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a soma dos ângulos internos de um pentágono?", o: ["540°", "360°", "720°"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos lados possui um triângulo equilátero?", o: ["3", "4", "5"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é o volume de um cilindro com raio 2 e altura 5?", o: ["20π", "10π", "25π"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a relação entre o diâmetro e o raio?", o: ["Diâmetro = 2 x raio", "Raio = 2 x diâmetro", "São iguais"], r: 0, tipo: "vocabulario" },
+    { q: "Quantos graus mede um ângulo reto?", o: ["90°", "45°", "180°"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é o nome do polígono com 8 lados?", o: ["Octógono", "Heptágono", "Nonágono"], r: 0, tipo: "vocabulario" },
+    { q: "Qual é a unidade de medida de superfície?", o: ["Metro cúbico", "Metro quadrado", "Metro linear"], r: 1, tipo: "vocabulario" }
+  ]
+}
+
+    ;
+
+    let perguntasAtuais = [];
+    let pontos = 0;
+    let indiceAtual = 0;
+
+    const pontosEl = document.getElementById('pontos');
+    const textoPergunta = document.getElementById('texto-pergunta');
+    const opcoesEl = document.getElementById('opcoes');
+    const reiniciarBtn = document.getElementById('reiniciar');
+    const quizContainer = document.querySelector('.quiz-container');
+    const categorias = document.querySelectorAll('.categoria');
+
+    // Sons (assuma que os arquivos estão na mesma pasta)
+    const somAcerto = new Audio('acerto.mp3');
+    const somErro = new Audio('errou.mp3');
+    const somFinal = new Audio('final.mp3');
+
+    function iniciarJogo(categoria) {
+      pontos = 0;
+      indiceAtual = 0;
+      pontosEl.textContent = pontos;
+      perguntasAtuais = [...bancoPerguntas[categoria]];
+      // embaralha perguntas
+      perguntasAtuais.sort(() => Math.random() - 0.5);
+      mostrarPergunta();
+
+      quizContainer.hidden = false;
+    }
+
+    function mostrarPergunta() {
+      if (indiceAtual >= perguntasAtuais.length) {
+        textoPergunta.textContent = "Fim do jogo! Sua pontuação: " + pontos;
+        opcoesEl.innerHTML = "";
+        somFinal.play();
+        return;
+      }
+
+      const pergunta = perguntasAtuais[indiceAtual];
+      textoPergunta.textContent = pergunta.q;
+      opcoesEl.innerHTML = "";
+
+      pergunta.o.forEach((op, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('opcao');
+        btn.textContent = op;
+        btn.dataset.indice = i;
+        btn.addEventListener('click', () => responder(i, pergunta.r));
+        opcoesEl.appendChild(btn);
+      });
+    }
+
+    function responder(indice, correto) {
+      const botoes = document.querySelectorAll('.opcao');
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (indice === correto) {
+        pontos += 10;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#9bff9b';
+        somAcerto.play();
+      } else {
+        pontos -= 5;
+        pontosEl.textContent = pontos;
+        botoes[indice].style.backgroundColor = '#ff9b9b';
+        botoes[correto].style.backgroundColor = '#9bff9b';
+        somErro.play();
+      }
+
+      indiceAtual++;
+      setTimeout(mostrarPergunta, 1000);
+    }
+
+    reiniciarBtn.addEventListener('click', () => {
+      // Reinicia o jogo na categoria atual
+      iniciarJogo(perguntaCategoriaAtual);
+    });
+
+    let perguntaCategoriaAtual = null;
+    categorias.forEach(cat => {
+      cat.addEventListener('click', () => {
+        perguntaCategoriaAtual = cat.dataset.categoria;
+        iniciarJogo(perguntaCategoriaAtual);
+        // Destaque visual na categoria selecionada
+        categorias.forEach(c => c.classList.remove('selecionada'));
+        cat.classList.add('selecionada');
+        // Scroll para o quiz
+        quizContainer.scrollIntoView({ behavior: 'smooth' });
+      });
+      // Acessibilidade com teclado
+      cat.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          cat.click();
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>

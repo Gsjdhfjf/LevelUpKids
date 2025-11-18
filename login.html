@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Interno</title>
+  <style>
+   /* ======== Fonte ======== */
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+body {
+  font-family: 'Comic Neue', cursive, Arial, sans-serif;
+  background: linear-gradient(135deg, #fceabb, #ffd3e2, #f8b500);
+  background-size: 300% 300%;
+  animation: fundoMover 15s ease infinite;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ======== Fundo animado ======== */
+@keyframes fundoMover {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes brilho {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-10px) scale(1.1); }
+}
+
+.fundo-decorativo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.estrelas {
+  position: absolute;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  animation: brilho 4s ease-in-out infinite;
+  filter: blur(0.8px);
+}
+
+.estrelas:nth-child(1) { width: 8px; height: 8px; top: 15%; left: 10%; animation-delay: 0s; }
+.estrelas:nth-child(2) { width: 10px; height: 10px; top: 35%; left: 70%; animation-delay: 1s; }
+.estrelas:nth-child(3) { width: 7px; height: 7px; top: 60%; left: 40%; animation-delay: 2s; }
+.estrelas:nth-child(4) { width: 9px; height: 9px; top: 80%; left: 25%; animation-delay: 3s; }
+
+/* ======== Caixa de Login ======== */
+.login-box {
+  background-color: #fff9f9;
+  border-radius: 25px;
+  padding: 45px 55px;
+  box-shadow: 0 10px 25px rgba(255,111,145,0.25);
+  border: 2px solid #ffd3e2;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  z-index: 10;
+  animation: surgir 1.2s ease;
+  transition: transform 0.3s ease;
+}
+
+.login-box:hover {
+  transform: translateY(-5px);
+}
+
+@keyframes surgir {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-box h2 {
+  font-size: 2.2rem;
+  color: #ff6f91;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 8px rgba(255,111,145,0.35);
+}
+
+.login-box p {
+  color: #555;
+  margin-bottom: 25px;
+  font-size: 1.05rem;
+}
+
+/* ======== Inputs ======== */
+.login-box input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 20px;
+  border: 2px solid #ffd3e2;
+  margin-bottom: 18px;
+  font-size: 1rem;
+  font-family: 'Comic Neue', cursive;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+  background-color: rgba(255,255,255,0.8);
+}
+
+.login-box input:focus {
+  border-color: #ff6f91;
+  box-shadow: 0 0 10px rgba(255,111,145,0.4);
+}
+
+/* ======== Botão ======== */
+.login-box button {
+  background: linear-gradient(135deg, #ff6f91, #ffb3c1);
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 35px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(255,111,145,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+}
+
+.login-box button:hover {
+  background: linear-gradient(135deg, #ff3b6a, #ff9ab5);
+  transform: scale(1.07);
+  box-shadow: 0 8px 20px rgba(255,111,145,0.5);
+}
+
+/* ======== Mascote Capivara ======== */
+@keyframes balanco {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(3deg); }
+  50% { transform: translateY(-4px) rotate(-3deg); }
+  75% { transform: translateY(-8px) rotate(3deg); }
+}
+
+.capivara-login {
+  width: 120px;
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  animation: balanco 4s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  z-index: 5;
+  border-radius: 15px;
+  background-color: #fff9f9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  padding: 5px;
+}
+
+.capivara-login:hover {
+  animation-play-state: paused;
+  transform: scale(1.1) rotate(5deg);
+  filter: brightness(1.1);
+}
+
+/* ======== Rodapé ======== */
+footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.9rem;
+  color: #ff6f91;
+  font-weight: 700;
+  text-align: center;
+  opacity: 0.8;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="fundo-decorativo">
+    <div class="estrelas"></div>
+    <div class="estrelas"></div>
+    <div class="estrelas"></div>
+    <div class="estrelas"></div>
+  </div>
+
+  <div class="login-box">
+    <h2>Entrar</h2>
+    <p>Faça login para continuar aprendendo 🎓</p>
+    <form onsubmit="loginOffline(event)">
+      <input type="text" id="usuario" placeholder="Usuário" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <button type="submit">Acessar</button>
+    </form>
+  </div>
+
+  <img
+    src="https://i.pinimg.com/736x/43/21/19/432119d669791f6881c7a2c940fa4a5c.jpg"
+    alt="Capivara Mascote"
+    class="capivara-login"
+  />
+
+  <footer>João Víctor Silva Rodrigues / Gabriel Paiva 1°DS</footer>
+
+  <script>
+    // Função de login local, sem servidor
+    function loginOffline(event) {
+      event.preventDefault();
+      const usuario = document.getElementById('usuario').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+
+      if (!usuario || !senha) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
+
+      // Simples validação offline (sem servidor)
+      const usuariosSalvos = JSON.parse(localStorage.getItem('usuarios')) || {};
+
+      if (usuariosSalvos[usuario]) {
+        if (usuariosSalvos[usuario] === senha) {
+          alert("Login realizado com sucesso!");
+          sessionStorage.setItem("logado", "true");
+          sessionStorage.setItem("usuario", usuario);
+          window.location.href = "index.html";
+        } else {
+          alert("Senha incorreta!");
+        }
+      } else {
+        // Cadastrar automaticamente se não existir
+        usuariosSalvos[usuario] = senha;
+        localStorage.setItem('usuarios', JSON.stringify(usuariosSalvos));
+        alert("Usuário cadastrado com sucesso!");
+        sessionStorage.setItem("logado", "true");
+        sessionStorage.setItem("usuario", usuario);
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+</body>
+</html>
